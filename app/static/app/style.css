@@ -1,0 +1,124 @@
+﻿html,
+body {
+    overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+body {
+    padding-top: 100px;
+}
+
+.list-group-item {
+    padding: 8px;
+}
+
+.pre-content {
+    white-space: pre-line;
+    text-align: justify;
+    margin: 0;
+    padding: 0;
+}
+
+code {
+    background-color: #fff3f3;
+    border: 1px solid #ccc;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inherit;
+    padding: 0.4px;
+}
+
+    code:before {
+        content: 'JSON: ';
+        font-size: larger;
+        color: black;
+    }
+
+.news-content {
+    text-align: justify;
+}
+
+.btn-copy {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-left: 0;
+    background-color: rgb(221, 221, 221);
+    margin: 0;
+    display: inline-block;
+    float: right;
+}
+
+    .btn-copy:hover {
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        border-left: 0;
+        cursor: pointer;
+        background-color: rgb(213, 213, 213);
+    }
+
+#logo {
+    background-image: url('logo.png');
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 100px;
+    padding-right: 50px;
+}
+
+.form-control {
+    border-radius: 0;
+    transition: border-color .01s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #666;
+}
+
+@media screen and (min-width: 992px) {
+    .mobile-menu-categories {
+        display: none;
+    }
+
+    .desktop-menu-categories {
+        display: block;
+    }
+
+    #row-container {
+        padding: 0px;
+        margin-top: -45px;
+    }
+
+}
+
+@media screen and (max-width: 991.98px) {
+    .mobile-menu-categories {
+        display: block;
+    }
+
+    .desktop-menu-categories {
+        display: none;
+    }
+}
+
+.open {
+    margin-top: 44px;
+}
+
+.alert-error {
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+    border-color: #faebcc;
+}
+
+.alert-error:before {
+    content: 'ERROR: ';
+}
+
+.alert-info:before {
+    content: 'INFO: ';
+}
+
+.alert-success:before {
+    content: 'SUCCESS: ';
+}

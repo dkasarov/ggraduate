@@ -1,0 +1,48 @@
+{% extends "app/base.html" %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom border-gray pb-2 mb-0">Update Api - {{api_model.name}}</legend>
+            <div class="form-group mt-3">
+                <label for="name">Name<span class="asteriskField">*</span></label>
+                <input type="text" name="name" class="form-control" id="name" value="{{api_model.name}}" required>
+            </div>
+            <div class="form-group mt-3">
+                <label for="category">Category<span class="asteriskField">*</span></label>
+                <select name="category" class="form-control" id="category" required>
+                    <option disabled>Choose category...</option>
+                    {% for cat in categories %}
+                    {% if api_model.category.pk is cat.pk %}
+                    <option value="{{ cat.pk }}" selected>{{ cat.title }}</option>
+                    {% else %}
+                    <option value="{{ cat.pk }}">{{ cat.title }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="asd">File<span class="asteriskField">*</span></label>
+                <div>
+                    <input type="file" id="asd" name="file" class="" required>
+                </div>
+                <small class="form-text text-muted">
+                    <ul>
+                        <li>The system only allows <b>csv</b> files.</li>
+                        <li>The first line will be used for <b>field names</b>.</li>
+                    </ul>
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="description">Description<span class="asteriskField">*</span></label>
+                <textarea rows="8" name="description" class="form-control" id="description" required
+                          placeholder="Please write additional info about this data.">{{api_model.description}}</textarea>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Add</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

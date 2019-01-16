@@ -1,0 +1,233 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% if title %}
+    <title>Apis - {{ title }}</title>
+    {% else %}
+    <title>Apis</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link href="https://canvasjs.com/assets/css/jquery-ui.1.11.2.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/favicon.ico' %}">
+
+    <!-- Thanks to Mark Otto, Jacob Thornton, and Bootstrap contributors -->
+    <link href="{% static 'app/offcanvas.css' %}" rel="stylesheet">
+    <link href="{% static 'app/style.css' %}" rel="stylesheet">
+</head>
+<body class="bg-body">
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-warning">
+    <a class="navbar-brand mr-auto mr-lg-0 text-dark" href="{% url 'app-home' %}">Graduate.pythonanywhere.com</a>
+    <button class="navbar-toggler p-0 border-0 bg-warning" type="button" data-toggle="offcanvas">
+        <span class="fa fa-user text-dark"></span>
+    </button>
+
+    <div class="navbar-collapse offcanvas-collapse bg-warning" id="navbarsExampleDefault">
+        <form class="form-inline my-2 my-sm-0 mr-auto" action="{% url 'app-search' %}" method="get">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <span class="fas fa-search"></span>
+                    </div>
+                </div>
+                <input class="form-control form-control-sm" type="text" value="{{ request.GET.searchtext }}"
+                       name="searchtext" placeholder="Search APIs...">
+            </div>
+        </form>
+        <ul class="navbar-nav mr-5 pr-5" style="text-transform: uppercase; font-family: Tahoma, Verdana, sans-serif;">
+            {% if user.is_authenticated %}
+            <span class="nav-link text-dark">
+                <i class="fa fa-user"></i>
+                Hi, {{user.first_name}} {{user.last_name}}
+            </span>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'add-api' %}">Add Api</a>
+            </li>
+            <li class="nav-item">
+
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-dark" href="#" id="dropdown01" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Data</a>
+                <div class="dropdown-menu pl-2 pt-0 pb-0" style="width: 200px;" aria-labelledby="dropdown01">
+                    <a class="nav-link text-dark" href="{% url 'my-cred' %}">
+                        My credentials
+                        <span class="badge badge-pill bg-success text-white align-text-bottom mr-0">{{num_of_cred}}</span>
+                    </a>
+                    <a class="nav-link text-dark" href="{% url 'my-apis' %}">
+                        My Apis
+                        <span class="badge badge-pill bg-success text-white align-text-bottom mr-0">{{num_of_apis}}</span>
+                    </a>
+                </div>
+            </li>
+            {% if user.is_superuser %}
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/admin" target="_blank">Admin Panel</a>
+            </li>
+            {% endif %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-dark" href="#" id="dropdown02" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Settings</a>
+                <div class="dropdown-menu pl-2 pt-0 pb-0" style="width: 200px;" aria-labelledby="dropdown02">
+                    <a class="nav-link text-dark" href="{% url 'profile' %}">Edit Profile</a>
+                    <a class="nav-link text-dark" href="{% url 'change-password' %}">Change Password</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'logout' %}">Logout</a>
+            </li>
+
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'register' %}">Register</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<div class="fixed-top mobile-menu-categories" style="margin-top: 56px;">
+    <div class="nav-scroller bg-white shadow-sm">
+        <nav class="nav nav-underline">
+            {% for cat in get_all_categories %}
+            {% if cat.new_to_date >= today %}
+            <a class="nav-link" href="{% url 'app-category' cat.title %}">
+                {{ cat.title }}
+                <span class="badge badge-pill bg-warning align-text-bottom ml-1">new</span>
+            </a>
+            {% endif %}
+            {% endfor %}
+            {% for cat in get_all_categories %}
+            {% if cat.new_to_date < today %}
+            <a class="nav-link" href="{% url 'app-category' cat.title %}">{{ cat.title }}</a>
+            {% endif %}
+            {% endfor %}
+        </nav>
+    </div>
+</div>
+
+<main role="main" class="container-fluid">
+    <div class="row" id="row-container">
+        <div class="col-lg-2 desktop-menu-categories">
+            <div class="my-3 p-2 bg-white rounded shadow-sm">
+                <h6 class="border-bottom border-gray pb-2 mb-0">Categories</h6>
+                <ul class="list-group list-group-item-light mt-1 categories-list">
+                    {% for cat in get_all_categories %}
+                    {% if cat.new_to_date >= today %}
+                    <li class="list-group-item">
+                        <a href="{% url 'app-category' cat.title %}">
+                            {{ cat.title }}<span class="badge badge-pill bg-warning align-text-bottom ml-1">new</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    {% for cat in get_all_categories %}
+                    {% if cat.new_to_date < today %}
+                    <li class="list-group-item">
+                        <a href="{% url 'app-category' cat.title %}">{{ cat.title }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} my-3">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% if 'next' in request.GET %}
+            <div class="alert alert-info my-3">
+                You must be logged in to access this page.
+            </div>
+            {% endif %}
+            <div class="my-3 p-2 bg-white rounded shadow-sm">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="my-3 p-2 bg-white rounded shadow-sm">
+                <h6 class="border-bottom border-gray pb-2 mb-0">Recent news</h6>
+                {% if get_top_5_news %}
+                {% for news in get_top_5_news %}
+                <div class="media text-muted pt-3">
+                    <img class="mr-2" width="32" src="{{ news.author.profile.image.url }}" role="img">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray news-content">
+                        <strong class="d-block text-gray-dark">{{ news.author.username }}</strong>
+                        {{ news.content }}
+                    </p>
+                </div>
+                {% endfor %}
+                <small class="d-block text-right mt-3">
+                    <a href="{% url 'app-news' %}">All news</a>
+                </small>
+                {% else %}
+                <i>No news yet.</i>
+                {% endif %}
+
+            </div>
+            <div class="my-3 p-2 bg-white rounded shadow-sm">
+                <h6 class="border-bottom border-gray pb-2 mb-0">Latest APIs</h6>
+                {% if latest_apis %}
+                {% for api in latest_apis %}
+                <div class="media text-muted pt-1">
+                    <a href="{% url 'api' api.name_url %}">
+                        <strong class="d-block text-gray-dark">{{ api.name }}</strong>
+                    </a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <i>No APIs yet.</i>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-light rounded shadow-sm">
+        <div class="lh-100">
+            <small class="mb-0 text-dark lh-100">API's &copy; 2018</small>
+        </div>
+    </div>
+</main>
+
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+        integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+        crossorigin="anonymous"></script>
+
+<script src="https://canvasjs.com/assets/script/jquery-ui.1.11.2.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+
+<script src="{% static 'app/offcanvas.js' %}"></script>
+<script src="{% static 'app/copy.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% extends 'app/base.html' %}
+{% block content %}
+<!-- <h3 class="border-bottom border-gray pb-2 mb-0">{{ title }}</h3> -->
+{% if not categories_list %}
+<h3>No APIs yet!</h3>
+<a href="{% url 'add-api' %}">Do you want to be the first to share the API?</a>
+{% else %}
+<a href="{% url 'add-api' %}" class="btn btn-outline-secondary mb-3">Add Api</a>
+{% endif %}
+{% for cat in categories_list %}
+<div style="background-color: AntiqueWhite;" class="alert">
+    <h3 class=""><a href="{% url 'api' cat.name_url %}">{{ cat.name }}</a></h3>
+    <small class="muted">On <i>{{ cat.date_added|date:'d F Y' }}</i> by <i>{{ cat.user.first_name }} {{ cat.user.last_name }}</i></small>
+</div>
+{% endfor %}
+
+{% if is_paginated %}
+{% if page_obj.has_previous %}
+<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+{% endif %}
+
+{% for num in page_obj.paginator.page_range %}
+{% if page_obj.number == num %}
+<a class="btn btn-info mb-4" href="?page={{num}}">{{num}}</a>
+{% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' %}
+<a class="btn btn-outline-info mb-4" href="?page={{num}}">{{num}}</a>
+{% endif %}
+{% endfor %}
+
+{% if page_obj.has_next %}
+<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+{% endif %}
+
+{% endif %}
+{% endblock %}

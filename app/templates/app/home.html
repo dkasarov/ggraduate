@@ -1,0 +1,46 @@
+{% extends 'app/base.html' %}
+{% block content %}
+<h3 class="border-bottom border-gray pb-2 mb-0">About</h3>
+<div class="pre-content">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pellentesque sit amet mi et pretium.
+    Ut dictum id ipsum ut porttitor. Morbi consectetur elit ut diam lobortis gravida. Praesent interdum,
+    lorem ut luctus hendrerit, dui dui tincidunt nisl, eu accumsan neque ex id mauris. Phasellus
+    consectetur, nibh sed lobortis venenatis, est velit sagittis dolor, ut pellentesque nunc felis at
+    nibh. Vestibulum ac nisl at nisl vehicula vehicula. Fusce tincidunt gravida egestas. Pellentesque
+    leo lacus, faucibus in lectus ac, vestibulum tempus libero. Nunc sodales rhoncus consequat. Morbi ac
+    diam libero. Donec malesuada varius purus, ac aliquet dolor scelerisque ac.
+
+    Phasellus placerat nisl nec justo tempus tincidunt sit amet eu nulla. Curabitur sit amet libero
+    eleifend, iaculis dui ut, vestibulum metus. Etiam sollicitudin sapien quis tortor iaculis, malesuada
+    bibendum diam lacinia. Cras imperdiet ligula justo, et semper massa eleifend et. Morbi nulla ligula,
+    efficitur vitae mauris at, dictum cursus magna. Vivamus odio justo, porttitor sit amet nulla quis,
+    fermentum pulvinar ante. Donec at nisl quis risus suscipit pharetra. Nunc mollis est ut purus
+    interdum, ut elementum massa ornare. Phasellus euismod enim massa, quis posuere dui consectetur eu.
+    Nunc sed venenatis tortor. Nullam condimentum orci nec sapien condimentum euismod.
+</div>
+
+<h4 class="border-bottom border-gray pb-2 mb-2 mt-3">Demo</h4>
+<div id="tabs" style="height: 360px">
+    <ul>
+        <li><a href="#tabs-1" style="font-size: 12px">Spline</a></li>
+        <li><a href="#tabs-2" style="font-size: 12px">Spline Area</a></li>
+    </ul>
+    <div id="tabs-1" style="height: 300px">
+        <div id="chartContainer1" style="height: 300px; width: 100%;"></div>
+    </div>
+    <div id="tabs-2" style="height: 300px">
+        <div id="chartContainer2" style="height: 300px; width: 100%;"></div>
+    </div>
+</div>
+
+<h4 class="border-bottom border-gray pb-2 mb-2 mt-3">Get JSON String</h4>
+
+<div>
+    <button class="btn-copy" onclick="copyText(json)">Copy</button>
+    <code id="json">string not found</code>
+</div>
+
+<h4 class="border-bottom border-gray pb-2 mb-2 mt-3">Use Api</h4>
+
+<a href="https://my.api.mockaroo.com/cc.json?key=29b55430">https://my.api.mockaroo.com/cc.json?key=29b55430</a>
+{% endblock %}

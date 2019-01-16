@@ -1,0 +1,27 @@
+{% extends 'app/base.html' %}
+{% block content %}
+<h3 class="">{{ api_model.name }}</h3>
+<small class="muted">On <i>{{ api_model.date_added|date:'d F Y' }}</i> by <i>{{ api_model.user.first_name }}
+                                                                             {{ api_model.user.last_name }}</i></small>
+{% if user.id is api_model.user.id %}
+<div><a href="{% url 'api-update' api_model.name_url %}" class="btn btn-secondary btn-sm">Update</a></div>
+{% endif %}
+<hr class="border-gray p-0 mt-1">
+<div class="pre-content"><p>{{ api_model.description }}</p></div>
+<h4 class="border-bottom border-gray pb-2 mb-2 mt-3">Get JSON String</h4>
+<div>
+    <button class="btn-copy" onclick="copyText(json)">Copy</button>
+    <code id="json">
+        {{api_model.data}}
+    </code>
+</div>
+<h4 class="border-bottom border-gray pb-2 mb-2 mt-3">Get API data for your website</h4>
+{% if not check_cred %}
+<form method="POST">
+    {% csrf_token %}
+    <button class="btn btn-primary btn-sm">Generate Credentials</button>
+</form>
+{% else %}
+<i>You already have that API in your <a href="{% url 'my-cred' %}">list of APIs</a>.</i>
+{% endif %}
+{% endblock %}
